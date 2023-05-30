@@ -1,14 +1,12 @@
-import React from "react";
-
 const Carousel = () => {
   return (
     <div>
-      <div id="carouselExample" className="carousel slide">
-        <div className="carousel-inner">
+      <div id="carouselExample" className="carousel slide h-100">
+        <div className="carousel-inner h-100">
           <div className="carousel-item active">
             <img
               src="https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              className="d-block w-100"
+              className="d-block w-100 h-100"
               alt="..."
             />
           </div>

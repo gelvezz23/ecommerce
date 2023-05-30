@@ -1,18 +1,48 @@
+/* eslint-disable react/no-unescaped-entities */
+import { useEffect } from "react";
 import "./styles.css";
 
+import { getInformation } from "../../utils/appwriteConfig";
+import { useState } from "react";
+import { numberFormat } from "../../utils/numberFormat";
 const Card = () => {
+  const [information, setInformation] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const getFiles = async () => {
+    const files = await getInformation();
+    setInformation(files.documents);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getFiles();
+  }, []);
+
+  if (loading) {
+    return <h1>loading ...</h1>;
+  }
+
   return (
-    <div>
-      <div className="card card-custome">
-        <img src="..." className="card-img-top" alt="..." />
-        <div className="card-body">
-          <p className="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
-    </div>
+    <>
+      {information.map((items, index) => {
+        return (
+          <div key={index} className="col py-4">
+            <div className="card card-custome ">
+              <img src={items.image} className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">{items.name}</h5>
+
+                <p className="card-text">{items.description}</p>
+                <a href="#" className="btn btn-primary">
+                  add {numberFormat(items.price)}
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 };
 
