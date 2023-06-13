@@ -2,8 +2,8 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
-export const userDetailsState = atom({
-  key: "userDetails",
-  default: null,
+export const productsState = atom({
+  key: "products",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });

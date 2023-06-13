@@ -1,14 +1,22 @@
 import { LogOutSession, getAvatar } from "../../utils/appwriteConfig";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userDetailsState } from "../../recoil/storeUserDetails";
+import { productsState } from "../../recoil/products";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
-  console.log(userDetails);
+  const [quantityProducts, setQuantityProducts] = useState(0);
+  const products = useRecoilValue(productsState);
+
+  useEffect(() => {
+    setQuantityProducts(products.length);
+  }, [products.length]);
   const loggout = () => {
     setUserDetails(null);
     LogOutSession();
   };
+  console.log("products", products.length);
   return (
     <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -26,7 +34,10 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          className="collapse navbar-collapse text-start"
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="/">
@@ -34,26 +45,62 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-          {!userDetails && (
-            <>
-              <a href="register" className="btn btn-outline-success">
-                Registrate
-              </a>
-              <a href="login" className="btn btn-outline-success">
-                Login
-              </a>
-            </>
-          )}
-          {userDetails && (
-            <>
-              <h2 className=" badge bg-secondary btn ">
-                <img src={getAvatar()} /> {userDetails.name}
-              </h2>
-              <h1 className=" badge bg-danger btn " onClick={() => loggout()}>
-                cerrar sesion
-              </h1>
-            </>
-          )}
+          <ul className="navbar-nav">
+            {!userDetails && (
+              <>
+                <li className="nav-item">
+                  <a href="register" className="btn btn-outline-success m-1">
+                    Registrate
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a href="login" className="btn btn-outline-success m-1">
+                    Login
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    href="/basket"
+                    type="button"
+                    className="btn btn-primary position-relative m-1"
+                  >
+                    cart
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {products ? products.length : 0}
+                      <span className="visually-hidden">unread messages</span>
+                    </span>
+                  </a>
+                </li>
+              </>
+            )}
+            {userDetails && (
+              <>
+                <li className="nav-item">
+                  <h2 className="btn btn-secondary m-1">
+                    <img src={getAvatar()} /> {userDetails.name}
+                  </h2>
+                </li>
+                <li className="nav-item">
+                  <h1 className="btn btn-danger m-1" onClick={() => loggout()}>
+                    cerrar sesion
+                  </h1>
+                </li>
+                <li className="nav-item">
+                  <a
+                    href="/basket"
+                    type="button"
+                    className="btn btn-primary position-relative m-1"
+                  >
+                    cart
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {quantityProducts}
+                      <span className="visually-hidden">unread messages</span>
+                    </span>
+                  </a>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
       </div>
     </nav>

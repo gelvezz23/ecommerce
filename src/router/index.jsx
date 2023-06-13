@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar";
 import Admin from "../container/Admin";
 import Login from "../container/Login";
 import Register from "../container/Register";
+import Basket from "../container/Basket";
+import { Checkout } from "../container/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: "/Dashboard",
     element: <Admin />,
+  },
+  {
+    path: "/Basket",
+    element: <Basket />,
+  },
+  {
+    path: "/Checkout",
+    element: <Checkout />,
   },
 ]);
 

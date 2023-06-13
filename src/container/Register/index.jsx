@@ -50,7 +50,7 @@ const Register = () => {
           onChange={(event) => handleForm(event)}
         />
         <button type="submit" className="btn btn-outline-success">
-          Iniciar sesion
+          Registrate
         </button>
         {error && (
           <div className="alert alert-danger" role="alert">

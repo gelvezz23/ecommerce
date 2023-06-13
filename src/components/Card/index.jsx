@@ -5,7 +5,12 @@ import "./styles.css";
 import { getInformation } from "../../utils/appwriteConfig";
 import { useState } from "react";
 import { numberFormat } from "../../utils/numberFormat";
+import Toast from "../Toast";
+import { useRecoilState } from "recoil";
+import { productsState } from "../../recoil/products";
 const Card = () => {
+  const [products, setProduct] = useRecoilState(productsState);
+  const toastLiveExample = document.getElementById("liveToast");
   const [information, setInformation] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -13,6 +18,25 @@ const Card = () => {
     const files = await getInformation();
     setInformation(files.documents);
     setLoading(false);
+  };
+  const handleAddButton = (id, items) => {
+    const toastBootstrap =
+      window.bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+    toastBootstrap.show();
+
+    const index = products.findIndex((item) => item.$id === id);
+    if (index !== -1) {
+      const updatedProducts = [...products];
+      const nuevoProducto = updatedProducts[index];
+      const productoActualizado = {
+        ...nuevoProducto,
+        quantity: nuevoProducto.quantity + 1,
+      };
+      updatedProducts[index] = productoActualizado;
+      setProduct(updatedProducts);
+    } else {
+      setProduct([...products, items]);
+    }
   };
 
   useEffect(() => {
@@ -22,7 +46,7 @@ const Card = () => {
   if (loading) {
     return <h1>loading ...</h1>;
   }
-
+  console.log("products", products);
   return (
     <>
       {information.map((items, index) => {
@@ -32,13 +56,20 @@ const Card = () => {
               <img src={items.image} className="card-img-top" alt="..." />
               <div className="card-body">
                 <h5 className="card-title">{items.name}</h5>
-
                 <p className="card-text">{items.description}</p>
-                <a href="#" className="btn btn-primary">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleAddButton(items.$id, { ...items, quantity: 1 })
+                  }
+                  className="btn btn-primary"
+                  id="liveToastBtn"
+                >
                   add {numberFormat(items.price)}
-                </a>
+                </button>
               </div>
             </div>
+            <Toast />
           </div>
         );
       })}
