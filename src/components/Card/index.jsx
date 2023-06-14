@@ -20,10 +20,11 @@ const Card = () => {
     setLoading(false);
   };
   const handleAddButton = (id, items) => {
-    const toastBootstrap =
-      window.bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-    toastBootstrap.show();
-
+    if (window) {
+      const toastBootstrap =
+        window.bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+      toastBootstrap.show();
+    }
     const index = products.findIndex((item) => item.$id === id);
     if (index !== -1) {
       const updatedProducts = [...products];
