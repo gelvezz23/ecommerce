@@ -21,13 +21,14 @@ export const Checkout = () => {
     event.preventDefault();
     event.stopPropagation();
     product.forEach(async (product) => {
-      const response = await crearPredido({
+      const data = {
         ...form,
         productName: product.name,
         price: product.price,
         description: product.description,
         quantity: product.quantity,
-      });
+      };
+      const response = await crearPredido(data);
       if (response.$id) {
         setssucces("Registro exitoso");
       }
