@@ -5,12 +5,10 @@ import "./styles.css";
 import { getInformation } from "../../utils/appwriteConfig";
 import { useState } from "react";
 import { numberFormat } from "../../utils/numberFormat";
-import Toast from "../Toast";
 import { useRecoilState } from "recoil";
 import { productsState } from "../../recoil/products";
 const Card = () => {
   const [products, setProduct] = useRecoilState(productsState);
-  const toastLiveExample = document.getElementById("liveToast");
   const [information, setInformation] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -20,11 +18,6 @@ const Card = () => {
     setLoading(false);
   };
   const handleAddButton = (id, items) => {
-    if (window) {
-      const toastBootstrap =
-        window.bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-      toastBootstrap.show();
-    }
     const index = products.findIndex((item) => item.$id === id);
     if (index !== -1) {
       const updatedProducts = [...products];
@@ -47,7 +40,6 @@ const Card = () => {
   if (loading) {
     return <h1>loading ...</h1>;
   }
-  console.log("products", products);
   return (
     <>
       {information.map((items, index) => {
@@ -70,7 +62,6 @@ const Card = () => {
                 </button>
               </div>
             </div>
-            <Toast />
           </div>
         );
       })}
