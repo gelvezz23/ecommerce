@@ -1,10 +1,20 @@
 import { useRecoilState } from "recoil";
 import { productsState } from "../../recoil/products";
 import { numberFormat } from "../../utils/numberFormat";
+import { totalAmountState } from "../../recoil/totalAmount";
 
 const Basket = () => {
   const [product, setProduct] = useRecoilState(productsState);
-  console.log("product", product);
+  const [totalAmount, setTotalAmount] = useRecoilState(totalAmountState);
+
+  const total = () => {
+    let total = 0;
+    product.forEach(
+      (item) => (total += Number(item.price) * Number(item.quantity))
+    );
+    setTotalAmount(total);
+  };
+  total();
 
   const handleDelete = (id) => {
     const newData = product.filter((item) => item.$id !== id);
@@ -17,9 +27,6 @@ const Basket = () => {
       {product.length === 0 ? (
         <>
           <h3 className="text-body-tertiary">Vacio</h3>
-          <a href="/" className="btn btn-outline-primary m-1">
-            Seguir comprando
-          </a>
         </>
       ) : (
         <table className="table">
@@ -39,12 +46,20 @@ const Basket = () => {
                   <th scope="row">{index + 1}</th>
                   <td>{product.name}</td>
                   <td>{numberFormat(product.price)}</td>
-                  <th>{product.quantity}</th>
-                  <td>{numberFormat(product.price * product.quantity)}</td>
+                  <td>{product.quantity}</td>
+                  <th>{numberFormat(product.price * product.quantity)}</th>
                   <td onClick={() => handleDelete(product.$id)}>eliminar</td>
                 </tr>
               );
             })}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>total</th>
+              <th>{numberFormat(totalAmount)}</th>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       )}

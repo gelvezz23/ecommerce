@@ -77,3 +77,26 @@ export const getInformation = async () => {
     console.log(error);
   }
 };
+
+export const crearPredido = async (data) => {
+  try {
+    const response = await databases.createDocument(
+      "6472b9be26f13a8cc040",
+      "64890278abbf5478f6ed",
+      ID.unique(),
+      {
+        paymentMethod: data.paymentMethod,
+        direccion: data.direccion,
+        telefono: data.telefono,
+        username: data.username,
+        cantidad: String(data.quantity),
+        productName: data.productName,
+        price: data.price,
+        description: data.description,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

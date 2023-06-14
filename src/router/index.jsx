@@ -25,11 +25,11 @@ const router = createBrowserRouter([
     element: <Admin />,
   },
   {
-    path: "/Basket",
+    path: "/basket",
     element: <Basket />,
   },
   {
-    path: "/Checkout",
+    path: "/checkout",
     element: <Checkout />,
   },
 ]);
