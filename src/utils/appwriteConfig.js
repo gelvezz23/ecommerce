@@ -122,6 +122,21 @@ export const createProduct = async (data) => {
   );
   return response;
 };
+
+export const updateProduct = async (data, id) => {
+  const response = await databases.updateDocument(
+    "6472b9be26f13a8cc040",
+    "6472b9e9bd1684389eb6",
+    id,
+    {
+      name: data.name,
+      price: data.price,
+      image: data.image,
+      description: data.description,
+    }
+  );
+  return response;
+};
 export const crearPredido = async (data) => {
   try {
     const response = await databases.createDocument(

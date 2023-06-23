@@ -20,6 +20,7 @@ const Navbar = () => {
   const loggout = () => {
     setUserDetails(null);
     LogOutSession();
+    sessionStorage.removeItem("userDetails");
     setTimeout(() => (window.location.href = "/"), 1000);
   };
 
@@ -82,12 +83,15 @@ const Navbar = () => {
             {userDetails && (
               <>
                 <li className="nav-item">
-                  <h2 className="btn btn-secondary m-1">
+                  <a
+                    href={userDetails.name === "admin" ? "/dashboard" : "#"}
+                    className="btn btn-secondary m-1"
+                  >
                     {imgAvatar && (
                       <img width={15} height={15} src={imgAvatar} />
                     )}{" "}
                     {userDetails.name}
-                  </h2>
+                  </a>
                 </li>
                 <li className="nav-item">
                   <h1 className="btn btn-danger m-1" onClick={() => loggout()}>

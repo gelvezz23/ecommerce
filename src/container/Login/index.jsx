@@ -24,7 +24,7 @@ const Login = () => {
     if (response.userId) {
       setssucces("Registro exitoso");
 
-      navigate(email === "admin@admin.com" ? "/dashboard" : "/", {
+      navigate(email.toLowerCase() === "admin@admin.com" ? "/dashboard" : "/", {
         replace: false,
       });
       return;
