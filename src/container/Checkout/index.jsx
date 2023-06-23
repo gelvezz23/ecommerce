@@ -21,19 +21,18 @@ export const Checkout = () => {
     event.preventDefault();
     event.stopPropagation();
     product.forEach(async (product) => {
-      const data = {
+      const response = await crearPredido({
         ...form,
         productName: product.name,
         price: product.price,
         description: product.description,
         quantity: product.quantity,
-      };
-      const response = await crearPredido(data);
+      });
       if (!response.message) {
         setssucces("Registro exitoso");
         setTimeout(() => {
           navigate("/", { replace: false });
-        }, 1000);
+        }, 3000);
       }
       setError(response.message);
     });

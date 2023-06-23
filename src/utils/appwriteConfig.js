@@ -1,7 +1,15 @@
 /* eslint-disable no-unused-vars */
 // Create a new file under lib/appwrite.js
 
-import { Client, Account, ID, Storage, Databases, Avatars } from "appwrite";
+import {
+  Client,
+  Account,
+  ID,
+  Storage,
+  Databases,
+  Avatars,
+  Query,
+} from "appwrite";
 
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
@@ -101,7 +109,8 @@ export const getInformation = async () => {
   try {
     const response = await databases.listDocuments(
       "6472b9be26f13a8cc040",
-      "6472b9e9bd1684389eb6"
+      "6472b9e9bd1684389eb6",
+      [Query.limit(100)]
     );
     return response;
   } catch (error) {
@@ -177,7 +186,8 @@ export const getOrdersData = async () => {
   try {
     const response = await databases.listDocuments(
       "6472b9be26f13a8cc040",
-      "64890278abbf5478f6ed"
+      "64890278abbf5478f6ed",
+      [Query.limit(100)]
     );
 
     return response;
