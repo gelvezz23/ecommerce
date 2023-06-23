@@ -3,7 +3,7 @@ import { numberFormat } from "../../utils/numberFormat";
 import { getOrdersData } from "../../utils/appwriteConfig";
 
 const Orders = () => {
-  const [product, setProduc] = useState();
+  const [product, setProduc] = useState([]);
   const getOrders = async () => {
     const response = await getOrdersData();
     setProduc(response.documents);
@@ -11,10 +11,9 @@ const Orders = () => {
   useEffect(() => {
     getOrders();
   }, []);
-  console.log(product);
   return (
     <div className="wrapper fadeInDown">
-      <h1>Tus compras</h1>
+      <h1>Tus pedidos</h1>
       {product.length === 0 ? (
         <>
           <h3 className="text-body-tertiary">Vacio</h3>

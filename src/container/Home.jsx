@@ -22,7 +22,7 @@ const Home = () => {
       <Carousel />
       <div className="container-fluid text-center">
         <div className="row">
-          <Card deleteProp={false} />
+          <Card normalProp={true} />
         </div>
       </div>
     </div>

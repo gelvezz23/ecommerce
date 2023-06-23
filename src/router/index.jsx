@@ -9,6 +9,7 @@ import { Checkout } from "../container/Checkout";
 import CreateProduct from "../components/CreateProduct";
 import DeleteProduct from "../components/deleteProduct";
 import Orders from "../components/Orders";
+import EditProduct from "../components/EditProduct";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "delete",
         element: <DeleteProduct />,
+      },
+      {
+        path: "edit",
+        element: <EditProduct />,
       },
       {
         path: "orders",

@@ -164,7 +164,6 @@ export const getOrdersData = async () => {
       "6472b9be26f13a8cc040",
       "64890278abbf5478f6ed"
     );
-    console.log("response", response);
 
     return response;
   } catch (error) {

@@ -7,10 +7,15 @@ import { useEffect, useState } from "react";
 const Navbar = () => {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const [quantityProducts, setQuantityProducts] = useState(0);
+  const [imgAvatar, setAvatar] = useState();
   const products = useRecoilValue(productsState);
-
+  const getImgAvatar = async () => {
+    const avatar = await getAvatar();
+    setAvatar(avatar);
+  };
   useEffect(() => {
     setQuantityProducts(products.length);
+    getImgAvatar();
   }, [products.length]);
   const loggout = () => {
     setUserDetails(null);
@@ -78,7 +83,10 @@ const Navbar = () => {
               <>
                 <li className="nav-item">
                   <h2 className="btn btn-secondary m-1">
-                    <img src={getAvatar()} /> {userDetails.name}
+                    {imgAvatar && (
+                      <img width={15} height={15} src={imgAvatar} />
+                    )}{" "}
+                    {userDetails.name}
                   </h2>
                 </li>
                 <li className="nav-item">
