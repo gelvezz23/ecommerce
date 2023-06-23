@@ -14,8 +14,8 @@ const Orders = () => {
   }, []);
 
   return (
-    <section className="orders-container">
-      <div className="wrapper fadeInDown">
+    <div className="wrapper fadeInDown">
+      <section className="orders-container">
         <h1>Tus pedidos</h1>
         {product.length === 0 ? (
           <>
@@ -48,8 +48,8 @@ const Orders = () => {
             </tbody>
           </table>
         )}
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
