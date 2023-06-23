@@ -19,11 +19,14 @@ const Login = () => {
     event.preventDefault();
     event.stopPropagation();
     const { email, password } = form;
-    console.log(form);
+
     const response = await LoginSession(email, password);
     if (response.userId) {
       setssucces("Registro exitoso");
-      navigate("/", { replace: false });
+
+      navigate(email === "admin@admin.com" ? "/dashboard" : "/", {
+        replace: false,
+      });
       return;
     }
     setError(response.message);

@@ -15,8 +15,9 @@ const Navbar = () => {
   const loggout = () => {
     setUserDetails(null);
     LogOutSession();
+    setTimeout(() => (window.location.href = "/"), 1000);
   };
-  console.log("products", products.length);
+
   return (
     <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -54,7 +55,7 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a href="login" className="btn btn-outline-success m-1">
+                  <a href="/login" className="btn btn-outline-success m-1">
                     Login
                   </a>
                 </li>

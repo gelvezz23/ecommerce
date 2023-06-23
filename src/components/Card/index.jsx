@@ -1,13 +1,14 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect } from "react";
 import "./styles.css";
 
-import { getInformation } from "../../utils/appwriteConfig";
+import { deleteProduct, getInformation } from "../../utils/appwriteConfig";
 import { useState } from "react";
 import { numberFormat } from "../../utils/numberFormat";
 import { useRecoilState } from "recoil";
 import { productsState } from "../../recoil/products";
-const Card = () => {
+const Card = ({ deleteProp }) => {
   const [products, setProduct] = useRecoilState(productsState);
   const [information, setInformation] = useState();
   const [loading, setLoading] = useState(true);
@@ -32,6 +33,12 @@ const Card = () => {
       setProduct([...products, items]);
     }
   };
+  const handleRemoveButton = async (id) => {
+    const response = await deleteProduct(id);
+    if (response) {
+      window.location.reload(false);
+    }
+  };
 
   useEffect(() => {
     getFiles();
@@ -43,6 +50,7 @@ const Card = () => {
   return (
     <>
       {information.map((items, index) => {
+        console.log(items);
         return (
           <div key={index} className="col py-4">
             <div className="card card-custome ">
@@ -53,12 +61,14 @@ const Card = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    handleAddButton(items.$id, { ...items, quantity: 1 })
+                    deleteProp
+                      ? handleRemoveButton(items.$id)
+                      : handleAddButton(items.$id, { ...items, quantity: 1 })
                   }
-                  className="btn btn-primary"
+                  className={`btn btn-${deleteProp ? "danger" : "primary"}`}
                   id="liveToastBtn"
                 >
-                  add {numberFormat(items.price)}
+                  {deleteProp ? "remove" : `add ${numberFormat(items.price)}`}
                 </button>
               </div>
             </div>
