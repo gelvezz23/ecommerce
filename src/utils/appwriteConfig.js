@@ -13,12 +13,17 @@ import {
 
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject("6472b862859955d2f424");
+  .setProject("65a7ff9ee4241b758bfe");
 
 const account = new Account(client);
 const storage = new Storage(client);
 const databases = new Databases(client);
 const avatars = new Avatars(client);
+
+const databaseId = "65a8013fdd232d57efd3";
+const bucketId = "65a802b0246b94944050";
+const collectionIdIcecreams = "65a8015159adcca6121e";
+const collectionIdPedidos = "65a8015f695286a20312";
 
 export const createUser = async (email, password, name) => {
   try {
@@ -63,9 +68,9 @@ export const getAvatar = async () => {
 export const getImages = async () => {
   try {
     const image = [];
-    const response = await storage.listFiles("6472ba73b2685d1a2a36");
+    const response = await storage.listFiles(bucketId);
     response.files.forEach((items) => {
-      const file = storage.getFilePreview("6472ba73b2685d1a2a36", items.$id);
+      const file = storage.getFilePreview(bucketId, items.$id);
       image.push(file.href);
     });
     return image;
@@ -76,7 +81,7 @@ export const getImages = async () => {
 
 export const getOneImage = async (id) => {
   try {
-    const response = await storage.getFilePreview("6472ba73b2685d1a2a36", id);
+    const response = await storage.getFilePreview(bucketId, id);
     return response;
   } catch (error) {
     console.log(error);
@@ -85,7 +90,7 @@ export const getOneImage = async (id) => {
 
 export const deleteImage = async (id) => {
   try {
-    const response = await storage.deleteFile("6472ba73b2685d1a2a36", id);
+    const response = await storage.deleteFile(bucketId, id);
     return response;
   } catch (error) {
     console.log(error);
@@ -94,11 +99,7 @@ export const deleteImage = async (id) => {
 
 export const createImage = async (file) => {
   try {
-    const upload = await storage.createFile(
-      "6472ba73b2685d1a2a36",
-      ID.unique(),
-      file
-    );
+    const upload = await storage.createFile(bucketId, ID.unique(), file);
     return upload;
   } catch (error) {
     console.log(error);
@@ -108,8 +109,8 @@ export const createImage = async (file) => {
 export const getInformation = async () => {
   try {
     const response = await databases.listDocuments(
-      "6472b9be26f13a8cc040",
-      "6472b9e9bd1684389eb6",
+      databaseId,
+      collectionIdIcecreams,
       [Query.limit(100)]
     );
     return response;
@@ -119,8 +120,8 @@ export const getInformation = async () => {
 };
 export const createProduct = async (data) => {
   const response = await databases.createDocument(
-    "6472b9be26f13a8cc040",
-    "6472b9e9bd1684389eb6",
+    databaseId,
+    collectionIdIcecreams,
     ID.unique(),
     {
       name: data.name,
@@ -134,8 +135,8 @@ export const createProduct = async (data) => {
 
 export const updateProduct = async (data, id) => {
   const response = await databases.updateDocument(
-    "6472b9be26f13a8cc040",
-    "6472b9e9bd1684389eb6",
+    databaseId,
+    collectionIdIcecreams,
     id,
     {
       name: data.name,
@@ -149,8 +150,8 @@ export const updateProduct = async (data, id) => {
 export const crearPredido = async (data) => {
   try {
     const response = await databases.createDocument(
-      "6472b9be26f13a8cc040",
-      "64890278abbf5478f6ed",
+      databaseId,
+      collectionIdPedidos,
       ID.unique(),
       {
         paymentMethod: data.paymentMethod,
@@ -172,8 +173,8 @@ export const crearPredido = async (data) => {
 export const deleteProduct = async (id) => {
   try {
     const response = await databases.deleteDocument(
-      "6472b9be26f13a8cc040",
-      "6472b9e9bd1684389eb6",
+      databaseId,
+      collectionIdIcecreams,
       id
     );
     return response;
@@ -185,8 +186,8 @@ export const deleteProduct = async (id) => {
 export const getOrdersData = async () => {
   try {
     const response = await databases.listDocuments(
-      "6472b9be26f13a8cc040",
-      "64890278abbf5478f6ed",
+      databaseId,
+      collectionIdPedidos,
       [Query.limit(100)]
     );
 

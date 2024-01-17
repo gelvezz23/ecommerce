@@ -28,6 +28,7 @@ const UploadImage = () => {
     event.preventDefault();
     event.stopPropagation();
     const response = await createImage(image);
+    console.log(image);
     const imageInfo = await getOneImage(response.$id);
     setInfoImage(imageInfo);
     setImageId(response.$id);
