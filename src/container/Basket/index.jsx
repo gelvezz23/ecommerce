@@ -1,11 +1,14 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { productsState } from "../../recoil/products";
 import { numberFormat } from "../../utils/numberFormat";
 import { totalAmountState } from "../../recoil/totalAmount";
+import { userDetailsState } from "../../recoil/storeUserDetails";
 
 const Basket = () => {
   const [product, setProduct] = useRecoilState(productsState);
   const [totalAmount, setTotalAmount] = useRecoilState(totalAmountState);
+  const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+  const userDetails = useRecoilValue(userDetailsState);
 
   const total = () => {
     let total = 0;
@@ -64,11 +67,17 @@ const Basket = () => {
         </table>
       )}
       <a href="/" className="btn btn-outline-primary m-1">
-        Seguir comprando
+        Seguir comprando - volver a la tienda
       </a>
-      <a href="/checkout" className="btn btn-outline-success m-1">
-        Elegir metodo de pago
-      </a>
+      {userInfo && userDetails ? (
+        <a href="/checkout" className="btn btn-outline-success m-1">
+          Siguiente - Hacer pedido
+        </a>
+      ) : (
+        <a href="/login" className="btn btn-outline-success m-1">
+          Login
+        </a>
+      )}
     </div>
   );
 };

@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { LoginSession, createUser } from "../../utils/appwriteConfig";
+import {
+  LoginSession,
+  createUser,
+  getUserInformation,
+  registerUser,
+} from "../../utils/appwriteConfig";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -15,16 +20,31 @@ const Register = () => {
       [name]: value,
     });
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password, name } = form;
-    const response = await createUser(email, password, name);
+    let register = {};
+    const { email, password, name, phone, cedula } = form;
+    const response = await createUser(email, password, name, phone);
     const createSession = await LoginSession(email, password);
+
     if (response.status && createSession.userId) {
-      setssucces("Registro exitoso");
-      return navigate("/", { replace: false });
+      register = await registerUser(email, password, name, phone, cedula);
+
+      if (register) {
+        const userInfo = await getUserInformation(email);
+        sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setssucces("Registro exitoso");
+        return navigate("/", { replace: false });
+      }
     }
-    setError(response.message || createSession.message);
+    const errorResponse = response.message ? `${response.message}` : "";
+    const errorCreateSession = createSession.message
+      ? `or ${createSession.message}`
+      : "";
+    const errorRegister = register.message ? `or ${register.message}` : "";
+
+    setError(`${errorResponse} ${errorCreateSession} ${errorRegister}`);
   };
 
   return (
@@ -34,13 +54,25 @@ const Register = () => {
         <input
           type="text"
           name="name"
-          placeholder="name"
+          placeholder="Nombre"
           onChange={(event) => handleForm(event)}
         />
         <input
           type="email"
           name="email"
-          placeholder="email"
+          placeholder="Correo"
+          onChange={(event) => handleForm(event)}
+        />
+        <input
+          type="text"
+          name="cedula"
+          placeholder="Cedula"
+          onChange={(event) => handleForm(event)}
+        />
+        <input
+          type="phone"
+          name="phone"
+          placeholder="Celular"
           onChange={(event) => handleForm(event)}
         />
         <input

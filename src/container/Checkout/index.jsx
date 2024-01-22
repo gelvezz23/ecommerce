@@ -13,29 +13,31 @@ export const Checkout = () => {
   const [form, setForm] = useState({ paymentMethod: "contra entrega" });
   const [error, setError] = useState();
   const [success, setssucces] = useState();
-
+  const userInfo = JSON.parse(sessionStorage.getItem("userInfo")) || {};
   const handlerOnchange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    const products = JSON.stringify(product);
+    const cedula = userInfo.documents[0].cedula;
+    const phone = userInfo.documents[0].phone;
+    const username = userInfo.documents[0].name;
     event.preventDefault();
     event.stopPropagation();
-    product.forEach(async (product) => {
-      const response = await crearPredido({
-        ...form,
-        productName: product.name,
-        price: product.price,
-        description: product.description,
-        quantity: product.quantity,
-      });
-      if (!response.message) {
-        setssucces("Registro exitoso");
-        setTimeout(() => {
-          navigate("/", { replace: false });
-        }, 3000);
-      }
-      setError(response.message);
+    const response = await crearPredido({
+      ...form,
+      cedula,
+      products,
+      phone,
+      username,
     });
+    if (!response.message) {
+      setssucces("Registro exitoso");
+      setTimeout(() => {
+        navigate("/", { replace: false });
+      }, 3000);
+    }
+    setError(response.message);
   };
 
   return (
@@ -60,11 +62,13 @@ export const Checkout = () => {
               className="accordion-collapse collapse show"
             >
               <div className="accordion-body">
+                <p>Identificacion: {userInfo.documents[0].cedula}</p>
                 <input
                   type="text"
                   name="username"
                   placeholder="Nombre completo"
                   className="form-control"
+                  value={userInfo.documents[0].name}
                   onChange={(event) => handlerOnchange(event)}
                 />
                 <input
@@ -72,6 +76,7 @@ export const Checkout = () => {
                   name="direccion"
                   placeholder="Direccion de envio"
                   className="form-control"
+                  value={form.direccion}
                   onChange={(event) => handlerOnchange(event)}
                 />
                 <input
@@ -79,6 +84,7 @@ export const Checkout = () => {
                   placeholder="Telefono"
                   name="telefono"
                   className="form-control"
+                  value={form.phone || userInfo.documents[0].phone}
                   onChange={(event) => handlerOnchange(event)}
                 />
                 <div className="">
@@ -97,34 +103,6 @@ export const Checkout = () => {
                       htmlFor="contra-entrega"
                     >
                       Contra entrega
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="paymentMethod"
-                      value="pse"
-                      onChange={(event) => handlerOnchange(event)}
-                      checked={form.paymentMethod === "pse"}
-                      id="pse"
-                    />
-                    <label className="form-check-label" htmlFor="pse">
-                      PSE
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="paymentMethod"
-                      checked={form.paymentMethod === "tc"}
-                      value="tc"
-                      onChange={(event) => handlerOnchange(event)}
-                      id="tc"
-                    />
-                    <label className="form-check-label" htmlFor="tc">
-                      Tarjeta de credito - debito
                     </label>
                   </div>
                 </div>
@@ -176,11 +154,16 @@ export const Checkout = () => {
             {success}
           </div>
         )}
-        <button type="submit" className="btn btn-primary btn-lg">
-          enviar
-        </button>
+        {form.direccion ? (
+          <button type="submit" className="btn btn-primary btn-lg">
+            enviar
+          </button>
+        ) : (
+          <p>Te falta escribir la direccion de envio</p>
+        )}
+
         <a href="/" type="button" className="btn btn-secondary btn-lg">
-          seguir comprando
+          seguir comprando - volver a la tienda
         </a>
       </div>
     </form>

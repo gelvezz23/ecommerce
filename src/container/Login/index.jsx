@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginSession } from "../../utils/appwriteConfig";
+import { LoginSession, getUserInformation } from "../../utils/appwriteConfig";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
@@ -19,8 +19,11 @@ const Login = () => {
     event.preventDefault();
     event.stopPropagation();
     const { email, password } = form;
-
     const response = await LoginSession(email, password);
+    const userInfo = await getUserInformation(email);
+    console.log(userInfo);
+
+    sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
     if (response.userId) {
       setssucces("Registro exitoso");
 
@@ -36,9 +39,9 @@ const Login = () => {
     <div className="wrapper fadeInDown">
       <h1>Bienvenido</h1>
       <div id="formContent">
-        <div className="fadeIn first">
+        {/*<div className="fadeIn first">
           <img src="" id="icon" alt="User Icon" />
-        </div>
+  </div>*/}
 
         <form onSubmit={(event) => handleSubmit(event)}>
           <input
@@ -78,8 +81,8 @@ const Login = () => {
         </form>
 
         <div id="formFooter">
-          <a className="underlineHover" href="#">
-            Forgot Password?
+          <a className="underlineHover" href="/register">
+            Crear una cuenta
           </a>
         </div>
       </div>

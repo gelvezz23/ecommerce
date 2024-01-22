@@ -17,10 +17,12 @@ const Navbar = () => {
     setQuantityProducts(products.length);
     getImgAvatar();
   }, [products.length]);
+
   const loggout = () => {
     setUserDetails(null);
     LogOutSession();
     sessionStorage.removeItem("userDetails");
+    sessionStorage.removeItem("userInfo");
     setTimeout(() => (window.location.href = "/"), 1000);
   };
 

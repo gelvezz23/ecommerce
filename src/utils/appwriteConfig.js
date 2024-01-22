@@ -22,12 +22,53 @@ const avatars = new Avatars(client);
 
 const databaseId = "65a8013fdd232d57efd3";
 const bucketId = "65a802b0246b94944050";
+
 const collectionIdIcecreams = "65a8015159adcca6121e";
 const collectionIdPedidos = "65a8015f695286a20312";
+const collectionUsers = "65ac092ca135d9b9242d";
 
-export const createUser = async (email, password, name) => {
+export const registerUser = async (email, password, name, phone, cedula) => {
   try {
-    const response = await account.create(ID.unique(), email, password, name);
+    const response = await databases.createDocument(
+      databaseId,
+      collectionUsers,
+      ID.unique(),
+      {
+        email,
+        password,
+        name,
+        phone,
+        cedula,
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getUserInformation = async (email) => {
+  try {
+    const response = await databases.listDocuments(
+      databaseId,
+      collectionUsers,
+      [Query.equal("email", email)]
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createUser = async (email, password, name, phone) => {
+  try {
+    const response = await account.create(
+      ID.unique(),
+      email,
+      password,
+      name,
+      phone
+    );
 
     return response;
   } catch (error) {
@@ -148,20 +189,18 @@ export const updateProduct = async (data, id) => {
   return response;
 };
 export const crearPredido = async (data) => {
+  console.log(data);
   try {
     const response = await databases.createDocument(
       databaseId,
       collectionIdPedidos,
       ID.unique(),
       {
-        paymentMethod: data.paymentMethod,
-        direccion: data.direccion,
-        telefono: data.telefono,
         username: data.username,
-        cantidad: String(data.quantity),
-        productName: data.productName,
-        price: data.price,
-        description: data.description,
+        direccion: data.direccion,
+        telefono: data.phone,
+        products: data.products,
+        cedula: data.cedula,
       }
     );
     return response;
