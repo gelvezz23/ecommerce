@@ -27,7 +27,6 @@ const Orders = () => {
           <Accordion style={{ width: "100%" }}>
             {pedido.map((product, index) => {
               const items = JSON.parse(product.products);
-              console.log("asdfsadsadsa", items);
               return (
                 <Accordion.Item eventKey={index} key={index}>
                   <Accordion.Header>

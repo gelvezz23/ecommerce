@@ -21,7 +21,6 @@ const Login = () => {
     const { email, password } = form;
     const response = await LoginSession(email, password);
     const userInfo = await getUserInformation(email);
-    console.log(userInfo);
 
     sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
     if (response.userId) {
