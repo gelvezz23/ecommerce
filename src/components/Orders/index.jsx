@@ -15,6 +15,17 @@ const Orders = () => {
     getOrders();
   }, []);
 
+  /*function printDiv(nombreDiv) {
+    var contenido = document.getElementById(nombreDiv).innerHTML;
+    var contenidoOriginal = document.body.innerHTML;
+
+    document.body.innerHTML = contenido;
+
+    window.print();
+
+    document.body.innerHTML = contenidoOriginal;
+  }
+*/
   return (
     <div className="wrapper fadeInDown col-12">
       <section className="orders-container">
@@ -28,7 +39,7 @@ const Orders = () => {
             {pedido.map((product, index) => {
               const items = JSON.parse(product.products);
               return (
-                <Accordion.Item eventKey={index} key={index}>
+                <Accordion.Item eventKey={index} key={index} id="areaImprimir">
                   <Accordion.Header>
                     <div
                       key={index}
@@ -70,6 +81,9 @@ const Orders = () => {
                         })}
                       </tbody>
                     </table>
+                    {/*<Button onClick={() => printDiv("areaImprimir")}>
+                      imprimir
+                      </Button>*/}
                   </Accordion.Body>
                 </Accordion.Item>
               );

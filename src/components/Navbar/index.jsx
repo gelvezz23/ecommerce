@@ -30,7 +30,7 @@ const Navbar = () => {
     <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
-          Funny
+          {"Heladeria Funny's"}
         </a>
         <button
           className="navbar-toggler"
