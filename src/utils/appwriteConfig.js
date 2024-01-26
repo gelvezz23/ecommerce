@@ -209,6 +209,22 @@ export const crearPredido = async (data) => {
   }
 };
 
+export const updateStatePedido = async (state, documentId) => {
+  try {
+    const response = await databases.updateDocument(
+      databaseId,
+      collectionIdPedidos,
+      documentId,
+      {
+        estado: state,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteProduct = async (id) => {
   try {
     const response = await databases.deleteDocument(

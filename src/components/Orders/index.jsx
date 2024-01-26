@@ -1,7 +1,7 @@
 import "./orders.css";
 import { useEffect, useState } from "react";
-import { getOrdersData } from "../../utils/appwriteConfig";
-import { Accordion } from "react-bootstrap";
+import { getOrdersData, updateStatePedido } from "../../utils/appwriteConfig";
+import { Accordion, Badge, Button } from "react-bootstrap";
 import { numberFormat } from "../../utils/numberFormat";
 
 const Orders = () => {
@@ -15,17 +15,33 @@ const Orders = () => {
     getOrders();
   }, []);
 
-  /*function printDiv(nombreDiv) {
-    var contenido = document.getElementById(nombreDiv).innerHTML;
-    var contenidoOriginal = document.body.innerHTML;
+  const printDiv = async (nombreDiv, documentId) => {
+    const ficha = document.getElementById(nombreDiv);
+    const ventanaImpresion = window.open(" ", "popUp");
+    ventanaImpresion.document.write(ficha.innerHTML);
+    ventanaImpresion.document.close();
 
-    document.body.innerHTML = contenido;
+    ventanaImpresion.onafterprint = async function () {
+      console.log(ventanaImpresion.self !== ventanaImpresion.top);
+      if (ventanaImpresion.self !== ventanaImpresion.top) {
+        const pedidoUp = await updateStatePedido("impreso", documentId);
+        console.log(pedidoUp);
+      } else {
+        console.log("Impresión cancelada, no se actualizan datos");
+      }
 
-    window.print();
+      // Verifica si la ventana de impresión está cerrada antes de recargar la página
+      if (ventanaImpresion.closed) {
+        // window.location.reload();
+      }
+    };
 
-    document.body.innerHTML = contenidoOriginal;
-  }
-*/
+    ventanaImpresion.print();
+
+    const pedidoUp = await updateStatePedido("impreso", documentId);
+    console.log(pedidoUp);
+  };
+
   return (
     <div className="wrapper fadeInDown col-12">
       <section className="orders-container">
@@ -39,7 +55,11 @@ const Orders = () => {
             {pedido.map((product, index) => {
               const items = JSON.parse(product.products);
               return (
-                <Accordion.Item eventKey={index} key={index} id="areaImprimir">
+                <Accordion.Item
+                  eventKey={index}
+                  key={index}
+                  id={`areaImprimir-${index}`}
+                >
                   <Accordion.Header>
                     <div
                       key={index}
@@ -49,7 +69,16 @@ const Orders = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <span scope="row"># {index + 1}</span>
+                      <span scope="row">
+                        # {index + 1}{" "}
+                        <Badge
+                          bg={
+                            product.estado === "impreso" ? "success" : "danger"
+                          }
+                        >
+                          {product.estado}
+                        </Badge>
+                      </span>
                       <span scope="row">id: {product.cedula}</span>
                       <span scope="row">nombre: {product.username}</span>
                     </div>
@@ -81,9 +110,13 @@ const Orders = () => {
                         })}
                       </tbody>
                     </table>
-                    {/*<Button onClick={() => printDiv("areaImprimir")}>
+                    <Button
+                      onClick={() =>
+                        printDiv(`areaImprimir-${index}`, product.$id)
+                      }
+                    >
                       imprimir
-                      </Button>*/}
+                    </Button>
                   </Accordion.Body>
                 </Accordion.Item>
               );
