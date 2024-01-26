@@ -32,7 +32,7 @@ const Orders = () => {
 
       // Verifica si la ventana de impresión está cerrada antes de recargar la página
       if (ventanaImpresion.closed) {
-        // window.location.reload();
+        window.location.reload();
       }
     };
 
