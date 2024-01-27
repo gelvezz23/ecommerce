@@ -6,6 +6,7 @@ import { numberFormat } from "../../utils/numberFormat";
 
 const Orders = () => {
   const [pedido, setPedido] = useState([]);
+  let allTotal = 0;
   const getOrders = async () => {
     const response = await getOrdersData();
     if (response) setPedido(response.documents);
@@ -84,6 +85,10 @@ const Orders = () => {
                     </div>
                   </Accordion.Header>
                   <Accordion.Body>
+                    <p scope="row">id: {product.cedula}</p>
+                    <p scope="row">nombre: {product.username}</p>
+                    <p scope="row">direccion: {product.direccion}</p>
+
                     <table className="table">
                       <thead>
                         <tr>
@@ -91,23 +96,34 @@ const Orders = () => {
                           <th scope="col">producto</th>
                           <th scope="col">precio</th>
                           <th scope="col">cantidad</th>
-                          <th scope="col">total</th>
+                          <th scope="col">subtotal</th>
                         </tr>
                       </thead>
                       <tbody>
                         {items.map((item, index) => {
+                          const itemTotal = item.price * item.quantity;
+                          allTotal += itemTotal;
                           return (
-                            <tr key={index}>
-                              <th scope="row">{index + 1}</th>
-                              <td>{item.name}</td>
-                              <td>{numberFormat(item.price)}</td>
-                              <td>{item.quantity}</td>
-                              <th>
-                                {numberFormat(item.price * item.quantity)}
-                              </th>
-                            </tr>
+                            <>
+                              <tr key={index}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{item.name}</td>
+                                <td>{numberFormat(item.price)}</td>
+                                <td>{item.quantity}</td>
+                                <th>
+                                  {numberFormat(item.price * item.quantity)}
+                                </th>
+                              </tr>
+                            </>
                           );
                         })}
+                        <tr key={index}>
+                          <th scope="row"></th>
+                          <td></td>
+                          <td></td>
+                          <td>total</td>
+                          <th>{numberFormat(allTotal)}</th>
+                        </tr>
                       </tbody>
                     </table>
                     <Button
