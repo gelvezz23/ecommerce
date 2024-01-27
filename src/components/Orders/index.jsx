@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./orders.css";
 import { useEffect, useState } from "react";
 import { getOrdersData, updateStatePedido } from "../../utils/appwriteConfig";
@@ -6,7 +7,7 @@ import { numberFormat } from "../../utils/numberFormat";
 
 const Orders = () => {
   const [pedido, setPedido] = useState([]);
-  let allTotal = 0;
+
   const getOrders = async () => {
     const response = await getOrdersData();
     if (response) setPedido(response.documents);
@@ -42,7 +43,7 @@ const Orders = () => {
     const pedidoUp = await updateStatePedido("impreso", documentId);
     console.log(pedidoUp);
   };
-
+  let allTotal = 0;
   return (
     <div className="wrapper fadeInDown col-12">
       <section className="orders-container">
@@ -122,7 +123,15 @@ const Orders = () => {
                           <td></td>
                           <td></td>
                           <td>total</td>
-                          <th>{numberFormat(allTotal)}</th>
+                          <th>
+                            {numberFormat(
+                              items.reduce(
+                                (total, item) =>
+                                  total + item.price * item.quantity,
+                                0
+                              )
+                            )}
+                          </th>
                         </tr>
                       </tbody>
                     </table>
