@@ -6,10 +6,11 @@ import {
   registerUser,
 } from "../../utils/appwriteConfig";
 import { useNavigate } from "react-router-dom";
+import "./styles.css"; // Importa un archivo CSS para estilos personalizados
 
 const Register = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState();
+  const [form, setForm] = useState({});
   const [error, setError] = useState();
   const [success, setssucces] = useState();
 
@@ -48,54 +49,100 @@ const Register = () => {
   };
 
   return (
-    <div className="wrapper fadeInDown">
-      <h1>Registrate</h1>
-      <form onSubmit={(event) => handleSubmit(event)}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nombre"
-          onChange={(event) => handleForm(event)}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Correo"
-          onChange={(event) => handleForm(event)}
-        />
-        <input
-          type="text"
-          name="cedula"
-          placeholder="Cedula"
-          onChange={(event) => handleForm(event)}
-        />
-        <input
-          type="phone"
-          name="phone"
-          placeholder="Celular"
-          onChange={(event) => handleForm(event)}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          onChange={(event) => handleForm(event)}
-        />
-        <button type="submit" className="btn btn-outline-success">
-          Registrate
-        </button>
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            {error}
+    <div className="register-container d-flex justify-content-center align-items-center vh-90">
+      <div
+        className="card shadow-lg p-4 rounded-3"
+        style={{ maxWidth: "400px" }}
+      >
+        <h2 className="text-center mb-4 text-black">¡Únete!</h2>
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label text-white">
+              Nombre
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
+              placeholder="Tu nombre completo"
+              onChange={handleForm}
+              required
+            />
           </div>
-        )}
-
-        {success && (
-          <div className="alert alert-success" role="alert">
-            {success}
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label text-white">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              placeholder="Tu correo electrónico"
+              onChange={handleForm}
+              required
+            />
           </div>
-        )}
-      </form>
+          <div className="mb-3">
+            <label htmlFor="cedula" className="form-label text-white">
+              Cédula
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="cedula"
+              name="cedula"
+              placeholder="Tu número de cédula"
+              onChange={handleForm}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="phone" className="form-label text-white">
+              Celular
+            </label>
+            <input
+              type="phone"
+              className="form-control"
+              id="phone"
+              name="phone"
+              placeholder="Tu número de celular"
+              onChange={handleForm}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label text-white">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              placeholder="Tu contraseña"
+              onChange={handleForm}
+              required
+            />
+          </div>
+          <div className="d-grid">
+            <button type="submit" className="btn btn-light btn-lg">
+              Registrarse
+            </button>
+          </div>
+          {error && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="alert alert-success mt-3" role="alert">
+              {success}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 };
