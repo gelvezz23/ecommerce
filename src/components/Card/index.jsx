@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect } from "react";
@@ -12,6 +13,8 @@ import { useState } from "react";
 import { numberFormat } from "../../utils/numberFormat";
 import { useRecoilState } from "recoil";
 import { productsState } from "../../recoil/products";
+import QuantityControl from "./QuantityControl";
+
 const Card = ({ deleteProp, editProp, normalProp }) => {
   const [products, setProduct] = useRecoilState(productsState);
   const [information, setInformation] = useState();
@@ -19,33 +22,22 @@ const Card = ({ deleteProp, editProp, normalProp }) => {
   const [form, setForm] = useState({});
   const [error, setError] = useState();
   const [success, setssucces] = useState();
+  const [addedToCart, setAddedToCart] = useState({}); // Estado para controlar si el producto se agregó
+  const [quantities, setQuantities] = useState({});
 
   const getFiles = async () => {
     const files = await getInformation();
     setInformation(files.documents);
     setLoading(false);
   };
-  const handleAddButton = (id, items) => {
-    const index = products.findIndex((item) => item.$id === id);
-    if (index !== -1) {
-      const updatedProducts = [...products];
-      const nuevoProducto = updatedProducts[index];
-      const productoActualizado = {
-        ...nuevoProducto,
-        quantity: nuevoProducto.quantity + 1,
-      };
-      updatedProducts[index] = productoActualizado;
-      setProduct(updatedProducts);
-    } else {
-      setProduct([...products, items]);
-    }
-  };
+
   const handleRemoveButton = async (id) => {
     const response = await deleteProduct(id);
     if (response) {
       window.location.reload(false);
     }
   };
+
   const handleFormChange = (event) => {
     const { name, value } = event;
     setForm({ ...form, [name]: value });
@@ -65,12 +57,80 @@ const Card = ({ deleteProp, editProp, normalProp }) => {
     getFiles();
   }, []);
 
+  useEffect(() => {
+    // Sincroniza el estado local 'quantities' con el estado global 'products'
+    const initialQuantities = {};
+    information?.forEach((item) => {
+      const existingProduct = products.find((p) => p.$id === item.$id);
+      if (existingProduct) {
+        initialQuantities[item.$id] = existingProduct.quantity;
+        setAddedToCart((prev) => ({ ...prev, [item.$id]: true })); // Asegura que el control de cantidad se muestre
+      }
+    });
+    setQuantities(initialQuantities);
+  }, [products, information]);
+
   if (loading) {
     return <h1>loading ...</h1>;
   }
+
+  const handleAddToCart = (item) => {
+    setAddedToCart((prev) => ({ ...prev, [item.$id]: true }));
+    setQuantities((prev) => ({ ...prev, [item.$id]: 1 })); // Inicializa la cantidad en 1
+    setProduct((prevProducts) => {
+      const existingProductIndex = prevProducts.findIndex(
+        (p) => p.$id === item.$id
+      );
+      if (existingProductIndex !== -1) {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[existingProductIndex] = {
+          ...updatedProducts[existingProductIndex],
+          quantity: (updatedProducts[existingProductIndex].quantity || 0) + 1,
+        };
+        return updatedProducts;
+      } else {
+        return [...prevProducts, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+  const handleIncrement = (id) => {
+    setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    setProduct((prevProducts) =>
+      prevProducts.map((p) =>
+        p.$id === id ? { ...p, quantity: (p.quantity || 0) + 1 } : p
+      )
+    );
+  };
+
+  const handleDecrement = (id) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: Math.max(1, (prev[id] || 1) - 1), // Asegura que la cantidad no sea menor a 1
+    }));
+    setProduct((prevProducts) =>
+      prevProducts.map((p) =>
+        p.$id === id
+          ? { ...p, quantity: Math.max(1, (p.quantity || 1) - 1) }
+          : p
+      )
+    );
+  };
+
+  const handleQuantityChange = (id, event) => {
+    const newQuantity = parseInt(event.target.value, 10);
+    setQuantities((prev) => ({ ...prev, [id]: Math.max(1, newQuantity) }));
+    setProduct((prevProducts) =>
+      prevProducts.map((p) =>
+        p.$id === id ? { ...p, quantity: Math.max(1, newQuantity) } : p
+      )
+    );
+  };
+
   return (
     <>
       {information.map((items, index) => {
+        const isAlreadyInCart = products.some((p) => p.$id === items.$id);
         return (
           <div key={index} className="col py-4">
             <div className="card card-custome ">
@@ -78,22 +138,47 @@ const Card = ({ deleteProp, editProp, normalProp }) => {
               <div className="card-body">
                 <h5 className="card-title">{items.name}</h5>
                 <p className="card-text">{items.description}</p>
-                <button
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target={`#exampleModal-${items.$id}`}
-                  onClick={() => {
-                    deleteProp && handleRemoveButton(items.$id);
-                    normalProp &&
-                      handleAddButton(items.$id, { ...items, quantity: 1 });
-                  }}
-                  className={`btn btn-${deleteProp ? "danger" : "primary"}`}
-                  id="liveToastBtn"
-                >
-                  {normalProp && `add ${numberFormat(items.price)}`}
-                  {editProp && "editar"}
-                  {deleteProp && "eliminar"}
-                </button>
+                {normalProp && !isAlreadyInCart && (
+                  <button
+                    type="button"
+                    className={`btn btn-primary`}
+                    onClick={() => handleAddToCart(items)}
+                  >
+                    Add {numberFormat(items.price)}
+                  </button>
+                )}
+                {normalProp && isAlreadyInCart && (
+                  <QuantityControl
+                    id={items.$id}
+                    quantity={
+                      quantities[items.$id] ||
+                      products.find((p) => p.$id === items.$id)?.quantity ||
+                      1
+                    }
+                    onIncrement={() => handleIncrement(items.$id)}
+                    onDecrement={() => handleDecrement(items.$id)}
+                    onChange={(e) => handleQuantityChange(items.$id, e.target)}
+                  />
+                )}
+                {editProp && (
+                  <button
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#exampleModal-${items.$id}`}
+                    className={`btn btn-warning`}
+                  >
+                    Editar
+                  </button>
+                )}
+                {deleteProp && (
+                  <button
+                    type="button"
+                    className={`btn btn-danger`}
+                    onClick={() => handleRemoveButton(items.$id)}
+                  >
+                    Eliminar
+                  </button>
+                )}
               </div>
             </div>
             {editProp && (

@@ -1,3 +1,15 @@
-.card-custome{
-    width: 18rem;
+.card-custome {
+  width: 18rem;
+}
+
+.flex.quantity-control {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos al centro */
+  width: 100%;
+}
+
+.quantity-input {
+  width: 100%; /* Ancho fijo para el input */
+  margin: 0 0.5rem; /* Espacio a la izquierda y derecha del input (0.5 * 16px = 8px) */
+  text-align: center; /* Centra el texto dentro del input */
 }
