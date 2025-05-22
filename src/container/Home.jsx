@@ -4,7 +4,7 @@ import Carousel from "../components/Carousel";
 import { useSetRecoilState } from "recoil";
 import { userDetailsState } from "../recoil/storeUserDetails";
 //import UploadImage from "../components/UploadImage";
-
+import "./styles.css";
 const Home = () => {
   const setUserDetails = useSetRecoilState(userDetailsState);
 
@@ -18,7 +18,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container_home">
       <Carousel />
       <div className="container-fluid text-center">
         <div className="row">

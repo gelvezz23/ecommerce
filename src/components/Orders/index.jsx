@@ -78,7 +78,7 @@ const Orders = () => {
                             product.estado === "impreso" ? "success" : "danger"
                           }
                         >
-                          {product.estado}
+                          {product.estado === "impreso" ? "entregado" : ""}
                         </Badge>
                       </span>
                       <span scope="row">id: {product.cedula}</span>

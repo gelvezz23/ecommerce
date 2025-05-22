@@ -1,8 +1,7 @@
-.register-container {
-  color: black;
-  height: 100vh;
+.container_home {
   width: 100%;
   background-image: url("/public/wallpaper.png"); /* ¡Cambia esto por la ruta de tu imagen! */
   background-size: cover; /* Ajusta la imagen para cubrir todo el espacio */
   background-position: center;
+  background-repeat: no-repeat;
 }

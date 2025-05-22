@@ -32,7 +32,7 @@ const Basket = () => {
           <h3 className="text-body-tertiary">Vacio</h3>
         </>
       ) : (
-        <table className="table">
+        <table className="table" style={{ background: "white" }}>
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -66,18 +66,23 @@ const Basket = () => {
           </tbody>
         </table>
       )}
-      <a href="/" className="btn btn-outline-primary m-1">
-        Seguir comprando - volver a la tienda
-      </a>
-      {userInfo && userDetails ? (
-        <a href="/checkout" className="btn btn-outline-success m-1">
-          Siguiente - Hacer pedido
+      <div
+        className=""
+        style={{ background: "white", width: "100%", padding: "1rem" }}
+      >
+        <a href="/" className="btn btn-outline-primary m-1">
+          Seguir comprando - volver a la tienda
         </a>
-      ) : (
-        <a href="/login" className="btn btn-outline-success m-1">
-          Login
-        </a>
-      )}
+        {userInfo && userDetails ? (
+          <a href="/checkout" className="btn btn-outline-success m-1">
+            Siguiente - Hacer pedido
+          </a>
+        ) : (
+          <a href="/login" className="btn btn-outline-success m-1">
+            Login
+          </a>
+        )}
+      </div>
     </div>
   );
 };

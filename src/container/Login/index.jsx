@@ -48,7 +48,7 @@ const Login = () => {
             id="login"
             className="fadeIn second"
             name="email"
-            placeholder="login"
+            placeholder="Correo de usuario"
             onChange={(event) => handleForm(event)}
           />
           <input
@@ -56,7 +56,7 @@ const Login = () => {
             id="password"
             className="fadeIn third"
             name="password"
-            placeholder="password"
+            placeholder="contrasena"
             onChange={(event) => handleForm(event)}
           />
           <button
@@ -79,8 +79,12 @@ const Login = () => {
           )}
         </form>
 
-        <div id="formFooter">
-          <a className="underlineHover" href="/register">
+        <div id="formFooter" style={{ color: "white" }}>
+          <a
+            className="underlineHover"
+            href="/register"
+            style={{ color: "white" }}
+          >
             Crear una cuenta
           </a>
         </div>

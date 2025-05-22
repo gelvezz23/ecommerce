@@ -25,13 +25,13 @@ a:hover {
 
 body {
   min-height: 100vh;
+  background: linear-gradient(135deg, #6dd5ed, #074150);
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {

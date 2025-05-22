@@ -52,11 +52,11 @@ const Register = () => {
     <div className="register-container d-flex justify-content-center align-items-center vh-90">
       <div
         className="card shadow-lg p-4 rounded-3"
-        style={{ maxWidth: "400px" }}
+        style={{ height: "65vh", overflow: "auto" }}
       >
         <h2 className="text-center mb-4 text-black">¡Únete!</h2>
         <form onSubmit={(event) => handleSubmit(event)}>
-          <div className="mb-3">
+          <div className="mb-1">
             <label htmlFor="name" className="form-label text-white">
               Nombre
             </label>
@@ -70,7 +70,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-1">
             <label htmlFor="email" className="form-label text-white">
               Correo electrónico
             </label>
@@ -84,7 +84,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-1">
             <label htmlFor="cedula" className="form-label text-white">
               Cédula
             </label>
@@ -98,7 +98,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-1">
             <label htmlFor="phone" className="form-label text-white">
               Celular
             </label>

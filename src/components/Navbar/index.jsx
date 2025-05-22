@@ -64,7 +64,7 @@ const Navbar = () => {
                 </li>
                 <li className="nav-item">
                   <a href="/login" className="btn btn-outline-success m-1">
-                    Login
+                    iniciar sesion
                   </a>
                 </li>
                 <li className="nav-item">
@@ -106,7 +106,7 @@ const Navbar = () => {
                     type="button"
                     className="btn btn-primary position-relative m-1"
                   >
-                    cart
+                    compras
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       {quantityProducts}
                       <span className="visually-hidden">unread messages</span>
